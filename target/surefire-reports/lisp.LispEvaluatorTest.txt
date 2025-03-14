@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: lisp.LispEvaluatorTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.014 s <<< FAILURE! - in lisp.LispEvaluatorTest
+lisp.LispEvaluatorTest.testEvaluateSubtract  Time elapsed: 0.007 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: 5 - 3 debe ser 2 ==> expected: <2> but was: <2.0>
+	at lisp.LispEvaluatorTest.testEvaluateSubtract(LispEvaluatorTest.java:92)
+
