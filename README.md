@@ -42,7 +42,25 @@ InterpreteLisp/
 
 ## Diagrama UML
 
-![image](https://github.com/user-attachments/assets/4a3c05a4-138f-428a-a2c2-f949d1375e96)
+![image](https://github.com/user-attachments/assets/fb5d01f8-31f1-412c-91c9-a5dd76816edf)
+
+## Diagrama de casos
+
+![image](https://github.com/user-attachments/assets/99c484f4-ace7-4a71-94dc-8423e6c37c8c)
+
+## Diagrama de secuencia: Evaluacion general
+
+![image](https://github.com/user-attachments/assets/1ec92c79-10c6-47c6-a054-643570928986)
+
+## Diagrama de secuencias de operaciones aritmeticas 
+
+![image](https://github.com/user-attachments/assets/73a1c149-26c4-49b7-ab88-af209cdf5635)
+
+
+
+
+
+
 
 
 
