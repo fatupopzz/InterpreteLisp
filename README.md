@@ -1,19 +1,19 @@
-# Intérprete LISP Básico
+# Intérprete LISP
 
 ## Descripción del Proyecto
-Este proyecto implementa un intérprete básico para un subconjunto del lenguaje LISP, siguiendo un enfoque pragmático que prioriza la eficiencia, robustez y extensibilidad.
+Este proyecto implementa un intérprete básico para un subconjunto del lenguaje LISP, siguiendo un enfoque basado en mapas de funciones que prioriza la eficiencia, modularidad y extensibilidad. El intérprete permite ejecutar operaciones aritméticas, definir funciones, realizar operaciones condicionales y soporta recursividad.
 
-## Características Soportadas
+## Características Implementadas
 - **Operaciones aritméticas**: +, -, *, /
 - **Instrucción QUOTE o '**: Para interrumpir el proceso de evaluación
 - **Definición de funciones**: DEFUN
 - **Asignación de variables**: SETQ
 - **Predicados**: ATOM, LIST, EQUAL, <, >
 - **Condicionales**: COND
-- **Recursividad**: Soporte para funciones recursivas
+- **Recursividad**: Soporte completo para funciones recursivas
 
 ## Arquitectura del Proyecto
-El proyecto sigue una arquitectura modular simple pero potente, que separa las responsabilidades en componentes claramente definidos:
+El proyecto sigue una arquitectura modular que separa las responsabilidades en componentes claramente definidos:
 
 ```
 InterpreteLisp/
@@ -23,93 +23,126 @@ InterpreteLisp/
 │   │       └── lisp/
 │   │           ├── interpreter/
 │   │           │   ├── LispInterpreter.java  # Integración de componentes
-│   │           │   ├── LispTokenizer.java    # Procesa texto a tokens con posición
+│   │           │   ├── LispTokenizer.java    # Procesa texto a tokens
 │   │           │   ├── LispParser.java       # Tokens a estructura de datos
-│   │           │   ├── LispEvaluator.java    # Evalúa expresiones
-│   │           │   └── LispException.java    # Manejo de errores mejorado
+│   │           │   ├── LispEvaluator.java    # Evalúa expresiones usando mapas de funciones
+│   │           │   └── LispException.java    # Manejo de errores específicos
 │   │           ├── environment/
 │   │           │   └── LispEnvironment.java  # Manejo de variables y funciones
 │   │           └── Main.java                 # REPL (Read-Eval-Print-Loop)
 │   └── test/
 │       └── java/
 │           └── lisp/
-│               ├── LispInterpreterTest.java
 │               ├── LispTokenizerTest.java
 │               ├── LispParserTest.java
-│               └── LispEvaluatorTest.java
-└── README.md
+│               ├── LispEvaluatorTest.java
+│               └── LispInterpreterTest.java
+```
+
+## Enfoque basado en Mapas de Funciones
+En lugar de utilizar grandes bloques `switch-case`, este intérprete emplea un enfoque basado en mapas de funciones:
+
+1. **Registro de Operadores**: Cada operador LISP se registra en un mapa junto con su implementación
+2. **Interfaz Funcional**: Se define una interfaz `LispOperator` que unifica el comportamiento de todos los operadores
+3. **Evaluación Dinámica**: El evaluador busca en el mapa la implementación correspondiente al operador encontrado
+4. **Extensibilidad**: Agregar nuevos operadores es tan simple como registrarlos en el mapa
+
+```java
+// Ejemplo de registro de operadores
+operators.put("+", this::evaluateAdd);
+operators.put("setq", this::handleSetq);
+operators.put("cond", this::handleCond);
 ```
 
 ## Proceso REPL (Read-Eval-Print-Loop)
 
-El intérprete implementa el ciclo REPL que es fundamental en LISP:
+El intérprete implementa el ciclo REPL fundamental en LISP:
 
-1. **Read**: El texto de entrada se convierte en tokens y luego en una estructura de datos.
-   - El tokenizador incluye información de posición para mejor manejo de errores.
-   - El parser convierte los tokens en una estructura de datos estándar de Java.
+1. **Read**: El texto de entrada se convierte en tokens y luego en una estructura de datos
+2. **Eval**: La estructura de datos se evalúa según las reglas de LISP
+3. **Print**: El resultado se muestra al usuario
+4. **Loop**: El proceso se repite
 
-2. **Eval**: La estructura de datos se evalúa según las reglas de LISP.
-   - El evaluador mantiene un control preciso de tipos para resultados consistentes.
-   - Se maneja recursividad mediante entornos anidados.
+## Manejo de Tipos de Datos
+- **Valores atómicos**: Números (enteros y de punto flotante), símbolos, strings
+- **Listas**: Representadas como `List<Object>` en Java
+- **Entorno**: Implementado como un mapa anidado para variables y funciones
 
-3. **Print**: El resultado se muestra al usuario.
-   - Los resultados se formatean de manera legible.
+## Manejo Inteligente de Tipos Numéricos
+El intérprete incluye un sistema que determina automáticamente si un resultado debe representarse como entero o número de punto flotante:
 
-4. **Loop**: El proceso se repite para la siguiente expresión.
+```java
+private Number toAppropriateNumber(double value, boolean preferInteger) {
+    if (Math.floor(value) == value && !Double.isInfinite(value)) {
+        if (preferInteger || (value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE)) {
+            return (int) value;
+        }
+    }
+    return value;
+}
+```
 
-## Ventajas del Enfoque
+## Cómo Ejecutar el Intérprete
 
-1. **Simplicidad**: Diseño directo y comprensible con menos abstracciones.
-2. **Mantenibilidad**: Código más legible y fácil de modificar.
-3. **Robustez**: Mejor manejo de errores con información de posición.
-4. **Extensibilidad**: Arquitectura modular que permite agregar características fácilmente.
-5. **Rendimiento**: Uso eficiente de estructuras de datos estándar de Java.
+### Requisitos Previos
+- Java 11 o superior
+- Maven
 
-## Estructuras de Datos Utilizadas
-
-- **HashMap**: Para entornos (variables y funciones)
-- **ArrayList**: Para representar listas en LISP
-- **Objetos estándar de Java**: Enteros, dobles y cadenas para representar valores atómicos
-
-## Cómo Ejecutar
-
+### Compilar el Proyecto
 ```bash
-# Compilar el proyecto
-mvn compile
+mvn clean compile
+```
 
-# Ejecutar el REPL interactivo
+### Ejecutar Pruebas
+```bash
+mvn test
+```
+
+### Iniciar el REPL
+```bash
 mvn exec:java -Dexec.mainClass="lisp.Main"
+```
 
-# Ejecutar un archivo LISP
+### Ejecutar un Archivo LISP
+```bash
 mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="ruta/al/archivo.lisp"
 ```
 
 ## Ejemplos de Uso
 
+### Operaciones Aritméticas
 ```lisp
-;; Operaciones aritméticas
-(+ 2 3)          ; => 5
-(- 10 5 2)       ; => 3
-(* 2 3 4)        ; => 24
-(/ 10 2)         ; => 5
+(+ 2 3)           ; => 5
+(- 10 5)          ; => 5
+(* 2 3 4)         ; => 24
+(/ 10 2)          ; => 5
+```
 
-;; Variables
-(setq x 42)      ; => 42
-(+ x 10)         ; => 52
+### Variables
+```lisp
+(setq x 42)       ; => 42
+(+ x 10)          ; => 52
+```
 
-;; Funciones
+### Funciones
+```lisp
+(defun suma (a b) (+ a b))
+(suma 2 3)        ; => 5
+
 (defun factorial (n)
   (cond ((equal n 0) 1)
         (t (* n (factorial (- n 1))))))
         
-(factorial 5)    ; => 120
-
-;; Condicionales
-(cond ((< 2 1) "Menor")
-      ((> 2 1) "Mayor")
-      (t "Igual"))  ; => "Mayor"
+(factorial 5)     ; => 120
 ```
 
-## Estado del Proyecto
+### Condicionales
+```lisp
+(cond ((> 3 2) "mayor")
+      ((< 3 2) "menor")
+      (t "igual"))  ; => "mayor"
+```
 
-En progreso como el progreso
+## Equipo de Desarrollo
+- Integrantes
+- Fatima Navarro 24044
