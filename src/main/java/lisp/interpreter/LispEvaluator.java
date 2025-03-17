@@ -1,26 +1,51 @@
 package lisp.interpreter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lisp.environment.LispEnvironment;
 import lisp.environment.LispEnvironment.FunctionDefinition;
 
 /**
  * Evaluador de expresiones LISP.
- * Se encarga de evaluar estructuras de datos que representan expresiones LISP.
- * 
- * @author Fatima Navarro 24044
  */
 public class LispEvaluator {
     
-    //-------------------------------------------------------------------
+    @FunctionalInterface
+    private interface LispOperator {
+        Object apply(List<?> list, LispEnvironment env);
+    }
+    
+    private final Map<String, LispOperator> operators = new HashMap<>();
+    
+    /**
+     * Constructor que inicializa el mapa de operadores.
+     */
+    public LispEvaluator() {
+        // Formas especiales
+        operators.put("quote", this::handleQuote);
+        operators.put("setq", this::handleSetq);
+        operators.put("defun", this::handleDefun);
+        operators.put("cond", this::handleCond);
+        
+        // Operaciones aritméticas
+        operators.put("+", this::evaluateAdd);
+        operators.put("-", this::evaluateSubtract);
+        operators.put("*", this::evaluateMultiply);
+        operators.put("/", this::evaluateDivide);
+        
+        // Predicados
+        operators.put("equal", this::evaluateEqual);
+        operators.put("<", this::evaluateLessThan);
+        operators.put(">", this::evaluateGreaterThan);
+        operators.put("atom", this::evaluateAtom);
+        operators.put("list", this::evaluateList);
+    }
+    
     /**
      * Evalúa una expresión LISP en el entorno proporcionado.
-     * 
-     * @param expr La expresión a evaluar
-     * @param env El entorno de ejecución
-     * @return El resultado de la evaluación
      */
     public Object evaluate(Object expr, LispEnvironment env) {
         // Si es un número, se evalúa a sí mismo
@@ -54,69 +79,33 @@ public class LispEvaluator {
             return list;
         }
         
-        // Obtener el primer elemento (operador o nombre de función)
-        Object first = list.get(0);
-        String operator = first.toString();
+        // Obtener el operador o nombre de función
+        String operator = list.get(0).toString();
         
-        // Formas especiales
-        switch (operator) {
-            case "quote": // (quote expr)
-                return handleQuote(list);
-                
-            case "setq": // (setq variable valor)
-                return handleSetq(list, env);
-                
-            case "defun": // (defun nombre (params) cuerpo)
-                return handleDefun(list, env);
-                
-            case "cond": // (cond (condición1 resultado1) (condición2 resultado2) ...)
-                return handleCond(list, env);
+        // Buscar en el mapa de operadores
+        LispOperator op = operators.get(operator);
+        if (op != null) {
+            return op.apply(list, env);
         }
         
-        // Operaciones aritméticas y predicados
-        switch (operator) {
-            case "+":
-                return evaluateAdd(list, env);
-            case "-":
-                return evaluateSubtract(list, env);
-            case "*":
-                return evaluateMultiply(list, env);
-            case "/":
-                return evaluateDivide(list, env);
-            case "equal":
-                return evaluateEqual(list, env);
-            case "<":
-                return evaluateLessThan(list, env);
-            case ">":
-                return evaluateGreaterThan(list, env);
-            case "atom":
-                return evaluateAtom(list, env);
-            case "list":
-                return evaluateList(list, env);
-        }
-        
-        // Si no es una forma especial ni operación básica, es una aplicación de función
+        // Si no es un operador conocido, intentar como función de usuario
         return applyUserFunction(operator, list, env);
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Maneja la forma especial 'quote'.
-     */
-    private Object handleQuote(List<?> list) {
+    private Object handleQuote(List<?> list, LispEnvironment env) {
         if (list.size() != 2) {
-            throw new RuntimeException("Error: quote requiere exactamente un argumento");
+            throw new LispException("Error: quote requiere exactamente un argumento");
         }
         return list.get(1);
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Maneja la forma especial 'setq'.
-     */
     private Object handleSetq(List<?> list, LispEnvironment env) {
         if (list.size() != 3) {
-            throw new RuntimeException("Error: setq requiere exactamente dos argumentos");
+            throw new LispException("Error: setq requiere exactamente dos argumentos");
+        }
+        
+        if (!(list.get(1) instanceof String)) {
+            throw new LispException("Error: el primer argumento de setq debe ser un símbolo");
         }
         
         String variable = list.get(1).toString();
@@ -125,20 +114,16 @@ public class LispEvaluator {
         return env.setVariable(variable, value);
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Maneja la forma especial 'defun'.
-     */
     private Object handleDefun(List<?> list, LispEnvironment env) {
         if (list.size() != 4) {
-            throw new RuntimeException("Error: defun requiere exactamente tres argumentos");
+            throw new LispException("Error: defun requiere exactamente tres argumentos");
         }
         
         String functionName = list.get(1).toString();
         
         // Parámetros
         if (!(list.get(2) instanceof List)) {
-            throw new RuntimeException("Error: los parámetros de defun deben ser una lista");
+            throw new LispException("Error: los parámetros de defun deben ser una lista");
         }
         
         List<?> paramsList = (List<?>) list.get(2);
@@ -154,162 +139,147 @@ public class LispEvaluator {
         return env.defineFunction(functionName, params, body);
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Maneja la forma especial 'cond'.
-     */
     private Object handleCond(List<?> list, LispEnvironment env) {
         for (int i = 1; i < list.size(); i++) {
-            Object clause = list.get(i);
-            
-            if (!(clause instanceof List)) {
-                throw new RuntimeException("Error: cláusula de cond debe ser una lista");
+            if (!(list.get(i) instanceof List)) {
+                throw new LispException("Error: cláusula de cond debe ser una lista");
             }
             
-            List<?> clauseList = (List<?>) clause;
-            if (clauseList.size() != 2) {
-                throw new RuntimeException("Error: cláusula de cond debe tener exactamente dos elementos");
+            List<?> clause = (List<?>) list.get(i);
+            if (clause.size() != 2) {
+                throw new LispException("Error: cláusula de cond debe tener exactamente dos elementos");
             }
             
-            Object condition = clauseList.get(0);
-            Object result = clauseList.get(1);
+            Object condition = clause.get(0);
+            Object result = clause.get(1);
             
-            // Si la condición es 't', es el caso por defecto
+            // Si la condición es 't' o evalúa a verdadero
             if (condition.equals("t") || isTrue(evaluate(condition, env))) {
-                return evaluate(result, env);
+                Object evaluated = evaluate(result, env);
+                return evaluated;
             }
         }
         
-        // Si ninguna condición se cumple, retornar nil
+        // Si ninguna condición se cumple
         return "nil";
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación de suma.
-     */
     private Object evaluateAdd(List<?> list, LispEnvironment env) {
-        // Evaluar los argumentos
         List<Object> args = evaluateArguments(list, env);
         
-        if (args.isEmpty()) {
-            return 0; // Suma sin argumentos es 0
-        }
+        if (args.isEmpty()) return 0;
         
         double result = 0;
         boolean allIntegers = true;
         
         for (Object arg : args) {
             if (!(arg instanceof Number)) {
-                throw new RuntimeException("Error: + requiere argumentos numéricos");
+                throw new LispException("Error: + requiere argumentos numéricos");
             }
             
             Number num = (Number) arg;
             result += num.doubleValue();
             
-            // Verificar si es un entero
-            if (allIntegers && !(num instanceof Integer)) {
+            // Si algún operando es double, el resultado también lo será
+            if (num instanceof Double || num instanceof Float) {
                 allIntegers = false;
             }
         }
         
-        // Si todos son enteros, retornar un entero
-        return allIntegers ? (int) result : result;
+        // Retorna int o double según corresponda
+        if (allIntegers && result == Math.floor(result) && !Double.isInfinite(result)) {
+            return (int) result;
+        } else {
+            return result;
+        }
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación de resta.
-     */
     private Object evaluateSubtract(List<?> list, LispEnvironment env) {
-        // Evaluar los argumentos
         List<Object> args = evaluateArguments(list, env);
         
         if (args.isEmpty()) {
-            throw new RuntimeException("Error: - requiere al menos un argumento");
+            throw new LispException("Error: - requiere al menos un argumento");
         }
         
         if (!(args.get(0) instanceof Number)) {
-            throw new RuntimeException("Error: - requiere argumentos numéricos");
+            throw new LispException("Error: - requiere argumentos numéricos");
         }
         
         Number firstArg = (Number) args.get(0);
         double result = firstArg.doubleValue();
-        boolean allIntegers = firstArg instanceof Integer;
+        boolean isInteger = firstArg instanceof Integer || firstArg instanceof Long;
         
         // Si solo hay un argumento, negar
         if (args.size() == 1) {
-            return allIntegers ? -firstArg.intValue() : -result;
+            if (isInteger) {
+                return -firstArg.intValue();
+            } else {
+                return -result;
+            }
         }
         
         // Restar el resto de argumentos
         for (int i = 1; i < args.size(); i++) {
-            Object arg = args.get(i);
-            
-            if (!(arg instanceof Number)) {
-                throw new RuntimeException("Error: - requiere argumentos numéricos");
+            if (!(args.get(i) instanceof Number)) {
+                throw new LispException("Error: - requiere argumentos numéricos");
             }
             
-            Number num = (Number) arg;
+            Number num = (Number) args.get(i);
             result -= num.doubleValue();
             
-            // Verificar si es un entero
-            if (allIntegers && !(num instanceof Integer)) {
-                allIntegers = false;
+            // Si algún operando es double, el resultado también lo será
+            if (num instanceof Double || num instanceof Float) {
+                isInteger = false;
             }
         }
         
-        // Si todos son enteros, retornar un entero
-        return allIntegers ? (int) result : result;
+        // Retorna int o double según corresponda
+        if (isInteger && result == Math.floor(result) && !Double.isInfinite(result)) {
+            return (int) result;
+        } else {
+            return result;
+        }
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación de multiplicación.
-     */
     private Object evaluateMultiply(List<?> list, LispEnvironment env) {
-        // Evaluar los argumentos
         List<Object> args = evaluateArguments(list, env);
         
-        if (args.isEmpty()) {
-            return 1; // Multiplicación sin argumentos es 1
-        }
+        if (args.isEmpty()) return 1;
         
         double result = 1;
         boolean allIntegers = true;
         
         for (Object arg : args) {
             if (!(arg instanceof Number)) {
-                throw new RuntimeException("Error: * requiere argumentos numéricos");
+                throw new LispException("Error: * requiere argumentos numéricos");
             }
             
             Number num = (Number) arg;
             result *= num.doubleValue();
             
-            // Verificar si es un entero
-            if (allIntegers && !(num instanceof Integer)) {
+            // Si algún operando es double, el resultado también lo será
+            if (num instanceof Double || num instanceof Float) {
                 allIntegers = false;
             }
         }
         
-        // Si todos son enteros, retornar un entero
-        return allIntegers ? (int) result : result;
+        // Retorna int o double según corresponda
+        if (allIntegers && result == Math.floor(result) && !Double.isInfinite(result)) {
+            return (int) result;
+        } else {
+            return result;
+        }
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación de división.
-     */
     private Object evaluateDivide(List<?> list, LispEnvironment env) {
-        // Evaluar los argumentos
         List<Object> args = evaluateArguments(list, env);
         
         if (args.isEmpty()) {
-            throw new RuntimeException("Error: / requiere al menos un argumento");
+            throw new LispException("Error: / requiere al menos un argumento");
         }
         
         if (!(args.get(0) instanceof Number)) {
-            throw new RuntimeException("Error: / requiere argumentos numéricos");
+            throw new LispException("Error: / requiere argumentos numéricos");
         }
         
         Number firstArg = (Number) args.get(0);
@@ -322,37 +292,31 @@ public class LispEvaluator {
         
         // Dividir por el resto de argumentos
         for (int i = 1; i < args.size(); i++) {
-            Object arg = args.get(i);
-            
-            if (!(arg instanceof Number)) {
-                throw new RuntimeException("Error: / requiere argumentos numéricos");
+            if (!(args.get(i) instanceof Number)) {
+                throw new LispException("Error: / requiere argumentos numéricos");
             }
             
-            Number num = (Number) arg;
+            Number num = (Number) args.get(i);
             double divisor = num.doubleValue();
             
             if (divisor == 0) {
-                throw new RuntimeException("Error: división por cero");
+                throw new LispException("Error: división por cero");
             }
             
             result /= divisor;
         }
         
-        // Intentar retornar un entero si el resultado es un número entero
-        if (result == (int) result) {
+        // Retorna int o double según corresponda
+        if (result == Math.floor(result) && !Double.isInfinite(result)) {
             return (int) result;
+        } else {
+            return result;
         }
-        
-        return result;
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación de igualdad.
-     */
     private Object evaluateEqual(List<?> list, LispEnvironment env) {
         if (list.size() != 3) {
-            throw new RuntimeException("Error: equal requiere exactamente dos argumentos");
+            throw new LispException("Error: equal requiere exactamente dos argumentos");
         }
         
         Object arg1 = evaluate(list.get(1), env);
@@ -361,20 +325,16 @@ public class LispEvaluator {
         return arg1.equals(arg2) ? "t" : "nil";
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación "menor que".
-     */
     private Object evaluateLessThan(List<?> list, LispEnvironment env) {
         if (list.size() != 3) {
-            throw new RuntimeException("Error: < requiere exactamente dos argumentos");
+            throw new LispException("Error: < requiere exactamente dos argumentos");
         }
         
         Object arg1 = evaluate(list.get(1), env);
         Object arg2 = evaluate(list.get(2), env);
         
         if (!(arg1 instanceof Number) || !(arg2 instanceof Number)) {
-            throw new RuntimeException("Error: < requiere argumentos numéricos");
+            throw new LispException("Error: < requiere argumentos numéricos");
         }
         
         double num1 = ((Number) arg1).doubleValue();
@@ -383,20 +343,16 @@ public class LispEvaluator {
         return num1 < num2 ? "t" : "nil";
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la operación "mayor que".
-     */
     private Object evaluateGreaterThan(List<?> list, LispEnvironment env) {
         if (list.size() != 3) {
-            throw new RuntimeException("Error: > requiere exactamente dos argumentos");
+            throw new LispException("Error: > requiere exactamente dos argumentos");
         }
         
         Object arg1 = evaluate(list.get(1), env);
         Object arg2 = evaluate(list.get(2), env);
         
         if (!(arg1 instanceof Number) || !(arg2 instanceof Number)) {
-            throw new RuntimeException("Error: > requiere argumentos numéricos");
+            throw new LispException("Error: > requiere argumentos numéricos");
         }
         
         double num1 = ((Number) arg1).doubleValue();
@@ -405,23 +361,16 @@ public class LispEvaluator {
         return num1 > num2 ? "t" : "nil";
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa el predicado 'atom'.
-     */
     private Object evaluateAtom(List<?> list, LispEnvironment env) {
         if (list.size() != 2) {
-            throw new RuntimeException("Error: atom requiere exactamente un argumento");
+            throw new LispException("Error: atom requiere exactamente un argumento");
         }
         
         Object arg = evaluate(list.get(1), env);
-        return !(arg instanceof List) || ((List<?>) arg).isEmpty() ? "t" : "nil";
+        boolean isAtom = !(arg instanceof List) || ((List<?>) arg).isEmpty();
+        return isAtom ? "t" : "nil";
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa la función 'list'.
-     */
     private Object evaluateList(List<?> list, LispEnvironment env) {
         List<Object> result = new ArrayList<>();
         
@@ -432,13 +381,9 @@ public class LispEvaluator {
         return result;
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Aplica una función definida por el usuario.
-     */
     private Object applyUserFunction(String functionName, List<?> list, LispEnvironment env) {
         if (!env.hasFunction(functionName)) {
-            throw new RuntimeException("Función no definida: " + functionName);
+            throw new LispException("Error: función no definida: " + functionName);
         }
         
         // Obtener la definición de la función
@@ -449,11 +394,11 @@ public class LispEvaluator {
         List<Object> args = evaluateArguments(list, env);
         
         if (params.size() != args.size()) {
-            throw new RuntimeException("Error: la función " + functionName + 
-                                      " espera " + params.size() + " argumentos, pero recibió " + args.size());
+            throw new LispException("Error: la función " + functionName + 
+                                   " espera " + params.size() + " argumentos, pero recibió " + args.size());
         }
         
-        // Crear un nuevo entorno para la ejecución de la función
+        // Crear entorno para la función
         LispEnvironment functionEnv = new LispEnvironment(env);
         
         // Asignar argumentos a parámetros
@@ -461,18 +406,13 @@ public class LispEvaluator {
             functionEnv.setVariable(params.get(i), args.get(i));
         }
         
-        // Evaluar el cuerpo de la función en el nuevo entorno
+        // Evaluar el cuerpo
         return evaluate(function.getBody(), functionEnv);
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Evalúa todos los argumentos de una lista (excepto el primero, que es el operador).
-     */
     private List<Object> evaluateArguments(List<?> list, LispEnvironment env) {
         List<Object> evaluatedArgs = new ArrayList<>();
         
-        // Empezar desde el segundo elemento (índice 1)
         for (int i = 1; i < list.size(); i++) {
             evaluatedArgs.add(evaluate(list.get(i), env));
         }
@@ -480,11 +420,6 @@ public class LispEvaluator {
         return evaluatedArgs;
     }
     
-    //-------------------------------------------------------------------
-    /**
-     * Determina si un valor LISP es verdadero.
-     * En LISP, todo es verdadero excepto nil.
-     */
     private boolean isTrue(Object value) {
         return !"nil".equals(value);
     }
