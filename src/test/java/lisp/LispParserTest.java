@@ -34,11 +34,11 @@ public class LispParserTest {
     @DisplayName("Parseo de átomos numéricos")
     public void testParseNumbers() {
         List<String> tokens = Arrays.asList("42");
-        Object result = parser.parse(tokens);
+        Object result = parser.LispParser(tokens);
         assertEquals(42, result);
         
         tokens = Arrays.asList("3.14");
-        result = parser.parse(tokens);
+        result = parser.LispParser(tokens);
         assertEquals(3.14, result);
     }
     
@@ -46,11 +46,11 @@ public class LispParserTest {
     @DisplayName("Parseo de símbolos")
     public void testParseSymbols() {
         List<String> tokens = Arrays.asList("x");
-        Object result = parser.parse(tokens);
+        Object result = parser.lispParse(tokens);
         assertEquals("x", result);
         
         tokens = Arrays.asList("+");
-        result = parser.parse(tokens);
+        result = parser.lispParser(tokens);
         assertEquals("+", result);
     }
     
@@ -58,7 +58,7 @@ public class LispParserTest {
     @DisplayName("Parseo de expresiones simples")
     public void testParseSimpleExpressions() {
         List<String> tokens = tokenizer.tokenize("(+ 2 3)");
-        Object result = parser.parse(tokens);
+        Object result = parser.lispParser(tokens);
         
         assertTrue(result instanceof List);
         @SuppressWarnings("unchecked")
@@ -74,7 +74,7 @@ public class LispParserTest {
     @DisplayName("Parseo de expresiones anidadas")
     public void testParseNestedExpressions() {
         List<String> tokens = tokenizer.tokenize("(+ 5 (* 2 3))");
-        Object result = parser.parse(tokens);
+        Object result = parser.LispParserparse(tokens);
         
         assertTrue(result instanceof List);
         @SuppressWarnings("unchecked")
@@ -178,6 +178,6 @@ public class LispParserTest {
     public void testParseExtraParenthesis() {
         List<String> tokens = tokenizer.tokenize(")");
         
-        assertThrows(LispException.class, () -> parser.parse(tokens));
+        assertThrows(LispException.class, () -> LispParser.parse(tokens));
     }
 }

@@ -55,9 +55,18 @@ public class LispInterpreter {
                 return null;
             }
             
-            // Parsear tokens a una estructura de datos
-            Object parsed = parser.parsear(tokens);
-            
+            // Convertir los tokens a String
+            StringBuilder textoTokens = new StringBuilder();
+            for (LispTokenizer.Token token : tokens) {
+                textoTokens.append(token.getValue()).append(" ");
+            }
+            String expresionTexto = textoTokens.toString().trim();
+
+            // Parsear tokens a una estructura de datos usando el texto reconstruido
+            // CAMBIO: Crear una instancia de LispParser antes de llamar a parse
+            LispParser parser = new LispParser();
+            Object parsed = parser.parse(expresionTexto);
+
             // Evaluar la estructura de datos
             return evaluator.evaluate(parsed, globalEnv);
         } catch (LispException e) {
@@ -65,14 +74,5 @@ public class LispInterpreter {
         } catch (Exception e) {
             throw new LispException("Error al evaluar: " + e.getMessage(), e);
         }
-    }
-    
-    /**
-     * Obtiene el entorno global del intérprete.
-     * 
-     * @return El entorno global
-     */
-    public LispEnvironment getGlobalEnvironment() {
-        return globalEnv;
-    }
+    }    
 }
