@@ -146,3 +146,4 @@ mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="ruta/al/archivo.lisp"
 ## Equipo de Desarrollo
 - Integrantes
 - Fatima Navarro 24044
+- Andrés Ismalej 24005
