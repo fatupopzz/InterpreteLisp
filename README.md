@@ -1,7 +1,7 @@
 # Intérprete LISP
 
 ## Descripción del Proyecto
-Este proyecto implementa un intérprete básico para un subconjunto del lenguaje LISP, siguiendo un enfoque basado en mapas de funciones que prioriza la eficiencia, modularidad y extensibilidad. El intérprete permite ejecutar operaciones aritméticas, definir funciones, realizar operaciones condicionales y soporta recursividad.
+Este proyecto implementa un intérprete básico para un subconjunto del lenguaje LISP. El intérprete permite ejecutar operaciones aritméticas, definir funciones, realizar operaciones condicionales y soporta recursividad.
 
 ## Características Implementadas
 - **Operaciones aritméticas**: +, -, *, /
@@ -12,7 +12,7 @@ Este proyecto implementa un intérprete básico para un subconjunto del lenguaje
 - **Condicionales**: COND
 - **Recursividad**: Soporte completo para funciones recursivas
 
-## Arquitectura del Proyecto
+## Estructura del Proyecto
 El proyecto sigue una arquitectura modular que separa las responsabilidades en componentes claramente definidos:
 
 ```
@@ -22,10 +22,10 @@ InterpreteLisp/
 │   │   └── java/
 │   │       └── lisp/
 │   │           ├── interpreter/
-│   │           │   ├── LispInterpreter.java  # Integración de componentes
+│   │           │   ├── LispInterpreter.java  # Clase principal del intérprete
 │   │           │   ├── LispTokenizer.java    # Procesa texto a tokens
 │   │           │   ├── LispParser.java       # Tokens a estructura de datos
-│   │           │   ├── LispEvaluator.java    # Evalúa expresiones usando mapas de funciones
+│   │           │   ├── LispEvaluator.java    # Evalúa expresiones
 │   │           │   └── LispException.java    # Manejo de errores específicos
 │   │           ├── environment/
 │   │           │   └── LispEnvironment.java  # Manejo de variables y funciones
@@ -33,56 +33,35 @@ InterpreteLisp/
 │   └── test/
 │       └── java/
 │           └── lisp/
+│               ├── LispInterpreterTest.java
 │               ├── LispTokenizerTest.java
 │               ├── LispParserTest.java
-│               ├── LispEvaluatorTest.java
-│               └── LispInterpreterTest.java
+│               └── LispEvaluatorTest.java
+├── pom.xml
+└── README.md
 ```
 
-## Enfoque basado en Mapas de Funciones
-En lugar de utilizar grandes bloques `switch-case`, este intérprete emplea un enfoque basado en mapas de funciones:
+## Arquitectura del Intérprete
 
-1. **Registro de Operadores**: Cada operador LISP se registra en un mapa junto con su implementación
-2. **Interfaz Funcional**: Se define una interfaz `LispOperator` que unifica el comportamiento de todos los operadores
-3. **Evaluación Dinámica**: El evaluador busca en el mapa la implementación correspondiente al operador encontrado
-4. **Extensibilidad**: Agregar nuevos operadores es tan simple como registrarlos en el mapa
+El intérprete sigue un diseño modular con estas componentes clave:
 
-```java
-// Ejemplo de registro de operadores
-operators.put("+", this::evaluateAdd);
-operators.put("setq", this::handleSetq);
-operators.put("cond", this::handleCond);
-```
+1. **Tokenizador (LispTokenizer)**: Convierte texto de entrada en tokens individuales.
+2. **Parser (LispParser)**: Transforma tokens en estructuras de datos anidadas.
+3. **Evaluador (LispEvaluator)**: Procesa las estructuras de datos y ejecuta las operaciones.
+4. **Entorno (LispEnvironment)**: Gestiona variables y funciones definidas.
+5. **Intérprete (LispInterpreter)**: Coordina los componentes anteriores.
+6. **REPL (Main)**: Proporciona la interfaz de usuario para interactuar con el intérprete.
 
 ## Proceso REPL (Read-Eval-Print-Loop)
 
 El intérprete implementa el ciclo REPL fundamental en LISP:
 
-1. **Read**: El texto de entrada se convierte en tokens y luego en una estructura de datos
+1. **Read**: El texto de entrada se convierte en tokens y estructura de datos
 2. **Eval**: La estructura de datos se evalúa según las reglas de LISP
 3. **Print**: El resultado se muestra al usuario
 4. **Loop**: El proceso se repite
 
-## Manejo de Tipos de Datos
-- **Valores atómicos**: Números (enteros y de punto flotante), símbolos, strings
-- **Listas**: Representadas como `List<Object>` en Java
-- **Entorno**: Implementado como un mapa anidado para variables y funciones
-
-## Manejo Inteligente de Tipos Numéricos
-El intérprete incluye un sistema que determina automáticamente si un resultado debe representarse como entero o número de punto flotante:
-
-```java
-private Number toAppropriateNumber(double value, boolean preferInteger) {
-    if (Math.floor(value) == value && !Double.isInfinite(value)) {
-        if (preferInteger || (value >= Integer.MIN_VALUE && value <= Integer.MAX_VALUE)) {
-            return (int) value;
-        }
-    }
-    return value;
-}
-```
-
-## Cómo Ejecutar el Intérprete
+## Cómo Ejecutar
 
 ### Requisitos Previos
 - Java 11 o superior
@@ -93,20 +72,57 @@ private Number toAppropriateNumber(double value, boolean preferInteger) {
 mvn clean compile
 ```
 
-### Ejecutar Pruebas
-```bash
-mvn test
-```
-
-### Iniciar el REPL
+### Ejecutar el REPL (modo interactivo)
 ```bash
 mvn exec:java -Dexec.mainClass="lisp.Main"
 ```
 
-### Ejecutar un Archivo LISP
+### Ejecutar un archivo LISP
 ```bash
 mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="ruta/al/archivo.lisp"
 ```
+
+## Ejemplo de archivo LISP
+
+El proyecto incluye un archivo de ejemplo `fibonacci.lisp` que puedes utilizar para probar el intérprete:
+
+```lisp
+;; Definición de la función fibonacci
+(defun fibonacci (n)
+  (cond ((equal n 0) 0)
+        ((equal n 1) 1)
+        (t (+ (fibonacci (- n 1))
+              (fibonacci (- n 2))))))
+
+;; Calcular el 10º número de Fibonacci
+(fibonacci 10)
+
+;; Definición de la función factorial
+(defun factorial (n)
+  (cond ((equal n 0) 1)
+        (t (* n (factorial (- n 1))))))
+
+;; Calcular el factorial de 5
+(factorial 5)
+
+;; Convertir de Fahrenheit a Celsius
+(defun fahrenheit-to-celsius (f)
+  (/ (* (- f 32) 5) 9))
+
+;; Convertir 212°F (punto de ebullición del agua) a Celsius
+(fahrenheit-to-celsius 212)
+```
+
+Para ejecutar este archivo de ejemplo:
+
+```bash
+mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="fibonacci.lisp"
+```
+
+Al ejecutarlo, deberías ver los resultados de:
+1. El décimo número de Fibonacci (55)
+2. El factorial de 5 (120)
+3. La conversión de 212°F a Celsius (100)
 
 ## Ejemplos de Uso
 
@@ -136,6 +152,17 @@ mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="ruta/al/archivo.lisp"
 (factorial 5)     ; => 120
 ```
 
+### Fibonacci (ejemplo recursivo)
+```lisp
+(defun fibonacci (n)
+  (cond ((equal n 0) 0)
+        ((equal n 1) 1)
+        (t (+ (fibonacci (- n 1))
+              (fibonacci (- n 2))))))
+              
+(fibonacci 10)    ; => 55
+```
+
 ### Condicionales
 ```lisp
 (cond ((> 3 2) "mayor")
@@ -143,8 +170,13 @@ mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="ruta/al/archivo.lisp"
       (t "igual"))  ; => "mayor"
 ```
 
+## Estructura de Datos Utilizadas
+
+- **HashMap**: Para el entorno (variables y funciones)
+- **ArrayList**: Para representar listas en LISP
+- **Árboles (implícitos)**: Mediante listas anidadas para la estructura de datos
+
 ## Equipo de Desarrollo
-- Integrantes
 - Fatima Navarro 24044
 - Andrés Ismalej 24005
 - Adair Velasquez 24596
