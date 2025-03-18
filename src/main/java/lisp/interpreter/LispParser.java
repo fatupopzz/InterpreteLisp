@@ -23,16 +23,23 @@ public class LispParser {
         if (input == null || input.trim().isEmpty()) {
             return null;
         }
-        
+    
         LispTokenizer tokenizer = new LispTokenizer();
         List<String> tokens = tokenizer.tokenize(input);
-        
+    
         if (tokens.isEmpty()) {
             return null;
         }
-        
+    
         position = 0;
-        return parseExpression(tokens);
+        Object result = parseExpression(tokens);
+    
+        // Si después de parsear quedan tokens sin procesar, es un error (paréntesis extra, etc.)
+        if (position < tokens.size()) {
+            throw new RuntimeException("Error: paréntesis extra detectado");
+        }
+    
+        return result;
     }
     
     /**
@@ -95,20 +102,25 @@ public class LispParser {
      */
     private List<Object> parseList(List<String> tokens) {
         List<Object> elements = new ArrayList<>();
-        
-        // Mientras no encontremos el paréntesis de cierre
-        while (position < tokens.size() && !tokens.get(position).equals(")")) {
+
+        while (position < tokens.size()) {
+            String currentToken = tokens.get(position);
+
+            if (currentToken.equals(")")) {
+                break;  // Cierra correctamente la lista
+            }
+
             elements.add(parseExpression(tokens));
         }
-        
-        // Verificar que encontramos el paréntesis de cierre
-        if (position >= tokens.size()) {
+
+    // Verificar que efectivamente encontramos un paréntesis de cierre
+        if (position >= tokens.size() || !tokens.get(position).equals(")")) {
             throw new RuntimeException("Se esperaba un paréntesis de cierre");
         }
-        
+
         // Consumir el paréntesis de cierre
         position++;
-        
+
         return elements;
     }
     
@@ -172,5 +184,5 @@ public class LispParser {
         } else {
             return expr.toString();
         }
-    }
+    }    
 }

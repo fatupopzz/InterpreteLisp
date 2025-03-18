@@ -130,8 +130,10 @@ public class LispParserTest {
     @Test
     @DisplayName("Error en parseo: paréntesis extra")
     public void testParseExtraParenthesis() {
-        assertThrows(RuntimeException.class, () -> parser.parse("(+ 2 3))"));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> parser.parse("(+ 2 3))"));
+        assertEquals("Error: paréntesis extra detectado", exception.getMessage());
     }
+    
     
     @Test
     @DisplayName("Error en parseo: número inválido")
@@ -146,10 +148,19 @@ public class LispParserTest {
     public void testPrintResult() {
         Object result = parser.parse("(+ 1 2)");
         String tree = parser.printResult(result);
+        System.out.println("Salida 1: " + tree); // Para ver qué se genera realmente
         assertEquals("[+ 1 2]", tree);
-        
+
         result = parser.parse("(+ 1 (* 2 3))");
         tree = parser.printResult(result);
+        System.out.println("Salida 2: " + tree); // Para depuración
         assertEquals("[+ 1 [* 2 3]]", tree);
+    }
+
+    @Test
+    @DisplayName("Depuración de parser")
+    public void testDebugParser() {
+        Object result = parser.parse("(+ 1 (* 2 3))");
+        System.out.println("Estructura devuelta por el parser: " + result);
     }
 }
