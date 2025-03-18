@@ -7,20 +7,11 @@ import java.util.List;
  * Parser para expresiones LISP.
  * Convierte una cadena de texto en una estructura de árbol basada en listas.
  * 
- * @author Versión revisada del parser
+ * @author Equipo LISP
  */
 public class LispParser {
     
-    private LispTokenizer tokenizer;
-    private List<String> tokens;
     private int position;
-    
-    /**
-     * Constructor del parser.
-     */
-    public LispParser() {
-        this.tokenizer = new LispTokenizer();
-    }
     
     /**
      * Analiza una expresión LISP y devuelve una estructura de árbol.
@@ -29,18 +20,44 @@ public class LispParser {
      * @return Estructura de árbol que representa la expresión
      */
     public Object parse(String input) {
-        tokens = tokenizer.tokenize(input);
+        if (input == null || input.trim().isEmpty()) {
+            return null;
+        }
+        
+        LispTokenizer tokenizer = new LispTokenizer();
+        List<String> tokens = tokenizer.tokenize(input);
+        
+        if (tokens.isEmpty()) {
+            return null;
+        }
+        
         position = 0;
-        return parseExpression();
+        return parseExpression(tokens);
     }
-
+    
+    /**
+     * Analiza una lista de tokens LISP.
+     * Este método es útil cuando ya se tienen los tokens.
+     * 
+     * @param tokens Lista de tokens a analizar
+     * @return Estructura de árbol que representa la expresión
+     */
+    public Object parse(List<String> tokens) {
+        if (tokens == null || tokens.isEmpty()) {
+            return null;
+        }
+        
+        position = 0;
+        return parseExpression(tokens);
+    }
     
     /**
      * Analiza una expresión recursivamente.
      * 
+     * @param tokens Lista de tokens
      * @return Objeto que representa la expresión (número, símbolo o lista)
      */
-    private Object parseExpression() {
+    private Object parseExpression(List<String> tokens) {
         if (position >= tokens.size()) {
             throw new RuntimeException("Fin inesperado de entrada");
         }
@@ -49,15 +66,15 @@ public class LispParser {
         
         // Si es un paréntesis de apertura, es una lista
         if (token.equals("(")) {
-            return parseList();
+            return parseList(tokens);
         }
         
         // Si es una comilla simple, es una forma quote abreviada
         if (token.equals("'")) {
             // Crear una lista que contiene 'quote' y la expresión siguiente
             List<Object> quoteList = new ArrayList<>();
-            quoteList.add("QUOTE");
-            quoteList.add(parseExpression());
+            quoteList.add("quote");
+            quoteList.add(parseExpression(tokens));
             return quoteList;
         }
         
@@ -73,14 +90,15 @@ public class LispParser {
     /**
      * Analiza una lista de expresiones.
      * 
+     * @param tokens Lista de tokens
      * @return Lista de objetos que representan la lista
      */
-    private List<Object> parseList() {
+    private List<Object> parseList(List<String> tokens) {
         List<Object> elements = new ArrayList<>();
         
         // Mientras no encontremos el paréntesis de cierre
         while (position < tokens.size() && !tokens.get(position).equals(")")) {
-            elements.add(parseExpression());
+            elements.add(parseExpression(tokens));
         }
         
         // Verificar que encontramos el paréntesis de cierre
