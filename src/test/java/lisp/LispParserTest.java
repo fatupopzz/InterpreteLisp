@@ -180,4 +180,61 @@ public class LispParserTest {
         
         assertThrows(LispException.class, () -> LispParser.parse(tokens));
     }
+
+    @Test
+    void testParseNumber() {
+        assertEquals(42, parser.parse("42"));
+        assertEquals(3.14, parser.parse("3.14"));
+    }
+
+    @Test
+    void testParseSymbol() {
+        assertEquals("x", parser.parse("x"));
+        assertEquals("hello", parser.parse("hello"));
+    }
+
+    @Test
+    void testParseSimpleList() {
+        List<Object> expected = List.of("+", 1, 2);
+        assertEquals(expected, parser.parse("(+ 1 2)"));
+    }
+
+    @Test
+    void testParseNestedList() {
+        List<Object> expected = List.of("+", List.of("*", 2, 3), 4);
+        assertEquals(expected, parser.parse("(+ (* 2 3) 4)"));
+    }
+
+    @Test
+    void testParseQuote() {
+        List<Object> expected = List.of("QUOTE", "x");
+        assertEquals(expected, parser.parse("'x"));
+    }
+
+    @Test
+    void testParseQuotedList() {
+        List<Object> expected = List.of("QUOTE", List.of(1, 2, 3));
+        assertEquals(expected, parser.parse("'(1 2 3)"));
+    }
+
+    @Test
+    void testParseEmptyList() {
+        List<Object> expected = new ArrayList<>();
+        assertEquals(expected, parser.parse("()"));
+    }
+
+    @Test
+    void testUnexpectedEndOfInput() {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> parser.parse("(+ 1"));
+        assertEquals("Se esperaba un paréntesis de cierre", exception.getMessage());
+    }
+
+    @Test
+    void testInvalidNumber() {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> parser.parse("abc123"));
+        assertEquals("No se puede convertir 'abc123' a un número", exception.getMessage());
+    }
 }
+
+
+
