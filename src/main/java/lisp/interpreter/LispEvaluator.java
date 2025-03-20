@@ -29,11 +29,11 @@ public class LispEvaluator {
     public LispEvaluator() {
         // Formas especiales
         operators.put("quote", this::handleQuote);
-        operators.put("QUOTE", this::handleQuote);  // Corregido: debe ser handleQuote
+        operators.put("QUOTE", this::handleQuote); 
         operators.put("setq", this::handleSetq);
         operators.put("SETQ", this::handleSetq);
         operators.put("defun", this::handleDefun);
-        operators.put("DEFUN", this::handleDefun);  // Corregido: debe ser handleDefun
+        operators.put("DEFUN", this::handleDefun);  
         operators.put("cond", this::handleCond);
         operators.put("COND", this::handleCond);
         // para la t y nil
