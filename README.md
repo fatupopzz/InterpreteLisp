@@ -40,6 +40,19 @@ InterpreteLisp/
 ├── pom.xml
 └── README.md
 ```
+## UML Y DIAGRAMAS 
+![image](https://github.com/user-attachments/assets/fe3e4e42-15c6-4ef2-a13b-d0a5030e2b7c)
+
+## DIAGRAMA DE CASOS
+![image](https://github.com/user-attachments/assets/ead7ae75-be85-49a4-8a60-7c8171c72e7e)
+
+## DIAGRAMA DE SECUENCIA 
+![image](https://github.com/user-attachments/assets/d25b2984-1d5b-4208-87a4-e22b6fe20405)
+
+## DIAGRAMA DE ESTADO 
+
+![image](https://github.com/user-attachments/assets/fd575675-e05c-4fd6-a3ca-98350d9226dd)
+
 
 ## Arquitectura del Intérprete
 
