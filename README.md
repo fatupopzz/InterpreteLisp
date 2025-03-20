@@ -93,6 +93,8 @@ mvn exec:java -Dexec.mainClass="lisp.Main"
 ### Ejecutar un archivo LISP
 ```bash
 mvn exec:java -Dexec.mainClass="lisp.Main" -Dexec.args="ruta/al/archivo.lisp"
+
+java -cp target/classes lisp.Main fibonacci.lisp
 ```
 
 ## Ejemplo de archivo LISP
