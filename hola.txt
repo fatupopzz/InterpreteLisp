@@ -1,0 +1,17 @@
+(DEFUN FIBONACCI (N)
+ (COND ((= N 0) 1)                   
+       ((= N 1) 1)                   
+	   (T (+ (FIBONACCI (- N 1))     
+	         (FIBONACCI (- N 2))))))
+
+
+
+
+
+(DEFUN MALAN (M N)
+  (COND ( (= N 0) 1)
+        (T (* M (MALAN M (- N 1)))
+        )
+  ))
+
+(MALAN 2 3)

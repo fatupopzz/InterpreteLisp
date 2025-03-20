@@ -50,6 +50,7 @@ public class LispEvaluator {
         
         // Predicados
         operators.put("equal", this::evaluateEqual);
+        operators.put("=", this::evaluateEqual);
         operators.put("<", this::evaluateLessThan);
         operators.put(">", this::evaluateGreaterThan);
         operators.put("atom", this::evaluateAtom);
