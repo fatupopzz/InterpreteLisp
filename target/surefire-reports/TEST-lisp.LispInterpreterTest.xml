@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lisp.LispInterpreterTest" time="0.027" tests="9" errors="0" skipped="0" failures="1">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lisp.LispInterpreterTest" time="0.014" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -12,10 +12,10 @@
     <property name="user.country" value="GT"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-22.jdk/Contents/Home/lib"/>
-    <property name="sun.java.command" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/surefire/surefirebooter11246618944088900075.jar /Users/fatu/Documents/Progra /InterpreteLisp/target/surefire 2025-03-18T09-38-13_220-jvmRun1 surefire3110222399996275666tmp surefire_02955152811771940642tmp"/>
+    <property name="sun.java.command" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/surefire/surefirebooter9341106216633666139.jar /Users/fatu/Documents/Progra /InterpreteLisp/target/surefire 2025-03-19T19-38-31_518-jvmRun1 surefire13859645902371358862tmp surefire_08159913704649764632tmp"/>
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
-    <property name="test" value="lisp.LispInterpreterTest"/>
+    <property name="test" value="lisp.LispInterpreterTest#testConditionals"/>
     <property name="surefire.test.class.path" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/test-classes:/Users/fatu/Documents/Progra /InterpreteLisp/target/classes:/Users/fatu/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.2/junit-jupiter-api-5.8.2.jar:/Users/fatu/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/fatu/.m2/repository/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/Users/fatu/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/fatu/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.2/junit-jupiter-engine-5.8.2.jar:/Users/fatu/.m2/repository/org/junit/platform/junit-platform-engine/1.8.2/junit-platform-engine-1.8.2.jar:/Users/fatu/.m2/repository/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar:/Users/fatu/.m2/repository/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/Users/fatu"/>
@@ -30,7 +30,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="apple.awt.application.name" value="ForkedBooter"/>
-    <property name="surefire.real.class.path" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/surefire/surefirebooter11246618944088900075.jar"/>
+    <property name="surefire.real.class.path" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/surefire/surefirebooter9341106216633666139.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.runtime.version" value="22.0.2+9-70"/>
@@ -59,17 +59,5 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="66.0"/>
   </properties>
-  <testcase name="testSimpleFunctions" classname="lisp.LispInterpreterTest" time="0.01"/>
-  <testcase name="testRecursiveFunctions" classname="lisp.LispInterpreterTest" time="0.002"/>
-  <testcase name="testQuote" classname="lisp.LispInterpreterTest" time="0.001"/>
-  <testcase name="testSimpleArithmetic" classname="lisp.LispInterpreterTest" time="0.001"/>
-  <testcase name="testConditionals" classname="lisp.LispInterpreterTest" time="0.001">
-    <failure type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <verdadero> but was: <"verdadero">
-	at lisp.LispInterpreterTest.testConditionals(LispInterpreterTest.java:76)
-]]></failure>
-  </testcase>
-  <testcase name="testVariables" classname="lisp.LispInterpreterTest" time="0"/>
-  <testcase name="testErrorHandling" classname="lisp.LispInterpreterTest" time="0.003"/>
-  <testcase name="testNestedExpressions" classname="lisp.LispInterpreterTest" time="0"/>
-  <testcase name="testComplexExpressions" classname="lisp.LispInterpreterTest" time="0"/>
+  <testcase name="testConditionals" classname="lisp.LispInterpreterTest" time="0.009"/>
 </testsuite>

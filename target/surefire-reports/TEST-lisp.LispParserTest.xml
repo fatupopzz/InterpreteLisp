@@ -1,82 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lisp.LispParserTest" time="0.084" tests="12" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="lisp.LispParserTest" time="0.022" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
-    <property name="sun.cpu.isalist" value="amd64"/>
-    <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\davcf\OneDrive\Documentos\proyecto2\InterpreteLisp\target\test-classes;C:\Users\davcf\OneDrive\Documentos\proyecto2\InterpreteLisp\target\classes;C:\Users\davcf\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\davcf\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\davcf\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\davcf\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\davcf\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\davcf\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\davcf\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\davcf\.m2\repository\org\apache\commons\commons-lang3\3.12.0\commons-lang3-3.12.0.jar;"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/test-classes:/Users/fatu/Documents/Progra /InterpreteLisp/target/classes:/Users/fatu/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.2/junit-jupiter-api-5.8.2.jar:/Users/fatu/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/fatu/.m2/repository/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/Users/fatu/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/fatu/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.2/junit-jupiter-engine-5.8.2.jar:/Users/fatu/.m2/repository/org/junit/platform/junit-platform-engine/1.8.2/junit-platform-engine-1.8.2.jar:/Users/fatu/.m2/repository/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar:/Users/fatu/.m2/repository/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar:"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="user.variant" value=""/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
-    <property name="user.timezone" value="America/Guatemala"/>
-    <property name="os.name" value="Windows 10"/>
+    <property name="os.name" value="Mac OS X"/>
     <property name="java.vm.specification.version" value="22"/>
     <property name="user.country" value="GT"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\davcf\AppData\Local\Temp\surefire230996389282604263\surefirebooter5777469222794663667.jar C:\Users\davcf\AppData\Local\Temp\surefire230996389282604263 2025-03-18T17-38-17_187-jvmRun1 surefire2421924474349861544tmp surefire_06841293092420523385tmp"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-22.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/surefire/surefirebooter7924756718851305311.jar /Users/fatu/Documents/Progra /InterpreteLisp/target/surefire 2025-03-19T19-36-38_885-jvmRun1 surefire12912711374961353689tmp surefire_013486365501136658983tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="lisp.LispParserTest"/>
-    <property name="surefire.test.class.path" value="C:\Users\davcf\OneDrive\Documentos\proyecto2\InterpreteLisp\target\test-classes;C:\Users\davcf\OneDrive\Documentos\proyecto2\InterpreteLisp\target\classes;C:\Users\davcf\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\davcf\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\davcf\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\davcf\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\davcf\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\davcf\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\davcf\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\davcf\.m2\repository\org\apache\commons\commons-lang3\3.12.0\commons-lang3-3.12.0.jar;"/>
+    <property name="surefire.test.class.path" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/test-classes:/Users/fatu/Documents/Progra /InterpreteLisp/target/classes:/Users/fatu/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.8.2/junit-jupiter-api-5.8.2.jar:/Users/fatu/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/Users/fatu/.m2/repository/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/Users/fatu/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/fatu/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.8.2/junit-jupiter-engine-5.8.2.jar:/Users/fatu/.m2/repository/org/junit/platform/junit-platform-engine/1.8.2/junit-platform-engine-1.8.2.jar:/Users/fatu/.m2/repository/org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar:/Users/fatu/.m2/repository/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
-    <property name="user.home" value="C:\Users\davcf"/>
-    <property name="user.language" value="es"/>
+    <property name="user.home" value="/Users/fatu"/>
+    <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="java.version.date" value="2024-04-16"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk-22"/>
-    <property name="file.separator" value="\"/>
-    <property name="basedir" value="C:\Users\davcf\OneDrive\Documentos\proyecto2\InterpreteLisp"/>
+    <property name="java.version.date" value="2024-07-16"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk-22.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/fatu/Documents/Progra /InterpreteLisp"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\davcf\AppData\Local\Temp\surefire230996389282604263\surefirebooter5777469222794663667.jar"/>
-    <property name="user.script" value=""/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/fatu/Documents/Progra /InterpreteLisp/target/surefire/surefirebooter7924756718851305311.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="java.runtime.version" value="22.0.1+8-16"/>
-    <property name="user.name" value="davcf"/>
-    <property name="stdout.encoding" value="Cp1252"/>
-    <property name="path.separator" value=";"/>
-    <property name="os.version" value="10.0"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="22.0.2+9-70"/>
+    <property name="user.name" value="fatu"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="14.7"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="maven.ext.class.path" value="C:\Users\davcf\.vscode\extensions\oracle.oracle-java-23.1.0\nbcode\java\maven-nblib\netbeans-eventspy.jar"/>
-    <property name="localRepository" value="C:\Users\davcf\.m2\repository"/>
+    <property name="maven.ext.class.path" value="/Users/fatu/.vscode/extensions/oracle.oracle-java-23.1.0/nbcode/java/maven-nblib/netbeans-eventspy.jar"/>
+    <property name="localRepository" value="/Users/fatu/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="java.io.tmpdir" value="C:\Users\davcf\AppData\Local\Temp\"/>
-    <property name="java.version" value="22.0.1"/>
-    <property name="user.dir" value="C:\Users\davcf\OneDrive\Documentos\proyecto2\InterpreteLisp"/>
-    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="/var/folders/3l/wy5jb2xj53gdxdc5tjngpypr0000gn/T/"/>
+    <property name="java.version" value="22.0.2"/>
+    <property name="user.dir" value="/Users/fatu/Documents/Progra /InterpreteLisp"/>
+    <property name="os.arch" value="aarch64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="sun.os.patch.level" value=""/>
-    <property name="native.encoding" value="Cp1252"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-22\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Cloudflare\Cloudflare WARP\;C:\Program Files\Git\cmd;C:\Users\davcf\.cargo\bin;C:\Program Files\Java\jdk-22\bin;C:\Users\davcf\AppData\Local\Programs\Python\Python312\;C:\Users\davcf\AppData\Local\Microsoft\WindowsApps;C:\Users\davcf\.dotnet\tools;C:\Users\davcf\AppData\Local\Programs\Microsoft VS Code\bin;;."/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/fatu/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
     <property name="java.vm.info" value="mixed mode, sharing"/>
-    <property name="stderr.encoding" value="Cp1252"/>
+    <property name="stderr.encoding" value="UTF-8"/>
     <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="java.vm.version" value="22.0.1+8-16"/>
-    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.vm.version" value="22.0.2+9-70"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="66.0"/>
   </properties>
-  <testcase name="testParseNestedExpressions" classname="lisp.LispParserTest" time="0.038"/>
-  <testcase name="testParseSimpleExpressions" classname="lisp.LispParserTest" time="0.001"/>
-  <testcase name="testParseEmptyList" classname="lisp.LispParserTest" time="0.001"/>
-  <testcase name="testPrintResult" classname="lisp.LispParserTest" time="0.002">
+  <testcase name="testParseNestedExpressions" classname="lisp.LispParserTest" time="0.008"/>
+  <testcase name="testParseSimpleExpressions" classname="lisp.LispParserTest" time="0"/>
+  <testcase name="testParseEmptyList" classname="lisp.LispParserTest" time="0"/>
+  <testcase name="testPrintResult" classname="lisp.LispParserTest" time="0">
     <system-out><![CDATA[Salida 1: [+ 1 2]
 Salida 2: [+ 1 [* 2 3]]
 ]]></system-out>
   </testcase>
-  <testcase name="testParseQuoteExpressions" classname="lisp.LispParserTest" time="0.002"/>
-  <testcase name="testParseInvalidNumber" classname="lisp.LispParserTest" time="0.001"/>
-  <testcase name="testParseMissingParenthesis" classname="lisp.LispParserTest" time="0.003"/>
-  <testcase name="testParseExtraParenthesis" classname="lisp.LispParserTest" time="0.001"/>
+  <testcase name="testParseQuoteExpressions" classname="lisp.LispParserTest" time="0"/>
+  <testcase name="testParseInvalidNumber" classname="lisp.LispParserTest" time="0"/>
+  <testcase name="testParseMissingParenthesis" classname="lisp.LispParserTest" time="0.001"/>
+  <testcase name="testParseExtraParenthesis" classname="lisp.LispParserTest" time="0"/>
   <testcase name="testParseNumbers" classname="lisp.LispParserTest" time="0.001"/>
   <testcase name="testParseSymbols" classname="lisp.LispParserTest" time="0.001"/>
-  <testcase name="testDebugParser" classname="lisp.LispParserTest" time="0.001">
+  <testcase name="testDebugParser" classname="lisp.LispParserTest" time="0">
     <system-out><![CDATA[Estructura devuelta por el parser: [+, 1, [*, 2, 3]]
 ]]></system-out>
   </testcase>
-  <testcase name="testParseEmptyInput" classname="lisp.LispParserTest" time="0.001"/>
+  <testcase name="testParseEmptyInput" classname="lisp.LispParserTest" time="0"/>
 </testsuite>
