@@ -1,3 +1,3 @@
-lisp/LispTokenizerTest.class
-lisp/LispInterpreterTest.class
-lisp/LispParserTest.class
+lisp\LispInterpreterTest.class
+lisp\LispParserTest.class
+lisp\LispTokenizerTest.class

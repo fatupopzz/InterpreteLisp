@@ -1,8 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: lisp.LispParserTest
 -------------------------------------------------------------------------------
-Tests run: 11, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.023 s <<< FAILURE! - in lisp.LispParserTest
-lisp.LispParserTest.testParseExtraParenthesis  Time elapsed: 0.001 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: Expected java.lang.RuntimeException to be thrown, but nothing was thrown.
-	at lisp.LispParserTest.testParseExtraParenthesis(LispParserTest.java:133)
-
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 s - in lisp.LispParserTest
