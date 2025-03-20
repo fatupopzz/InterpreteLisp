@@ -7,7 +7,7 @@ import java.util.List;
  * Parser para expresiones LISP.
  * Convierte una cadena de texto en una estructura de árbol basada en listas.
  * 
- * @author Equipo LISP
+ * @author Ismael 
  */
 public class LispParser {
     

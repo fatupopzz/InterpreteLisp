@@ -9,7 +9,7 @@ import lisp.environment.LispEnvironment;
  * Integra todos los componentes del intérprete (tokenizador, parser y evaluador)
  * y proporciona una interfaz para evaluar expresiones LISP.
  * 
- * @author Equipo LISP
+ * 
  */
 public class LispInterpreter {
     

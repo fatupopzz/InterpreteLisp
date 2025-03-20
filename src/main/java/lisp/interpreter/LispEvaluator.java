@@ -10,6 +10,9 @@ import lisp.environment.LispEnvironment.FunctionDefinition;
 
 /**
  * Evaluador de expresiones LISP.
+ * Evalúa expresiones aritméticas, operaciones lógicas y funciones definidas por el usuario.
+ * También maneja formas especiales como quote, setq, defun y cond.
+ * @author Fatima Navarro 24044
  */
 public class LispEvaluator {
     
@@ -21,14 +24,23 @@ public class LispEvaluator {
     private final Map<String, LispOperator> operators = new HashMap<>();
     
     /**
-     * Constructor que inicializa el mapa de operadores.
+     * Constructor que inicializa el mapa de operadores usando hashmaps.
      */
     public LispEvaluator() {
         // Formas especiales
         operators.put("quote", this::handleQuote);
+        operators.put("QUOTE", this::handleQuote);  // Corregido: debe ser handleQuote
         operators.put("setq", this::handleSetq);
+        operators.put("SETQ", this::handleSetq);
         operators.put("defun", this::handleDefun);
+        operators.put("DEFUN", this::handleDefun);  // Corregido: debe ser handleDefun
         operators.put("cond", this::handleCond);
+        operators.put("COND", this::handleCond);
+        // para la t y nil
+        operators.put("t", (list, env) -> "t");
+        operators.put("nil", (list, env) -> "nil");
+        operators.put("T", (list, env) -> "t");
+        operators.put("NIL", (list, env) -> "nil");
         
         // Operaciones aritméticas
         operators.put("+", this::evaluateAdd);
@@ -43,7 +55,6 @@ public class LispEvaluator {
         operators.put("atom", this::evaluateAtom);
         operators.put("list", this::evaluateList);
     }
-    
     /**
      * Evalúa una expresión LISP en el entorno proporcionado.
      */

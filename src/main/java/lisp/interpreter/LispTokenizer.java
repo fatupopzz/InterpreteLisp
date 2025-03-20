@@ -7,7 +7,7 @@ import java.util.List;
  * Tokenizador mejorado para expresiones LISP.
  * Convierte una cadena de texto en una lista de tokens con información de posición.
  * 
- * @author Equipo LISP
+ * 
  */
 public class LispTokenizer {
     

@@ -10,8 +10,8 @@ import lisp.interpreter.LispInterpreter;
 
 /**
  * Clase principal que implementa un REPL (Read-Eval-Print-Loop) para el intérprete LISP.
+ * Permite ejecutar expresiones LISP interactivamente o desde un archivo.
  * 
- * @author Equipo LISP
  */
 public class Main {
     
